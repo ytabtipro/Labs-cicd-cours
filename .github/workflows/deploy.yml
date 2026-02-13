@@ -26,6 +26,18 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
 
+      - name: Déploiement local (nginx)
+        run: |
+          set -e
+          sudo mkdir -p /var/www/tpcicd
+          sudo rsync -av --delete \
+            --exclude ".git" \
+            --exclude ".github" \
+            ./ /var/www/tpcicd/
+          sudo chown -R www-data:www-data /var/www/tpcicd
+          sudo find /var/www/tpcicd -type d -exec chmod 755 {} \;
+          sudo find /var/www/tpcicd -type f -exec chmod 644 {} \;
+
       - name: Configurer GitHub Pages
         uses: actions/configure-pages@v5
 
