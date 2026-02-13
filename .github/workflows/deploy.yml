@@ -1,25 +1,33 @@
 name: Publication site
-on:
-  push:
-    branches: ["main"]
 
-permissions:
-  contents: write
+on:
+  workflow_run:
+    workflows: ["CI - Vérification HTML"]
+    branches: ["main"]
+    types: [completed]
 
 jobs:
-  Deploiement:
-    runs-on: ubuntu-latest
-
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - ubuntu-latest
+    
     steps:
-      - name: Récupération du code
-        uses: actions/checkout@v3
+      - name: Checkout du commit validé par la CI
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
-      - name: Configuration de la page
-        uses: peaceiris/configure-pages@v5
+      - name: Configurer GitHub Pages
+        uses: actions/configure-pages@v5
 
-      - name: utilisation d'artifact
-        uses: peaceiris/upload-pages-artifact@v3
-
+      - name: Uploader l'artifact Pages
+        uses: actions/upload-pages-artifact@v3
         with:
           path: .
-      - uses: action/deploy-pages@v4
+
+      - name: Déployer sur GitHub Pages
+        uses: actions/deploy-pages@v4

@@ -1,4 +1,4 @@
-name: CI - Vérification HTML
+name: CI - Verification HTML
 
 on:
   push:
@@ -8,7 +8,11 @@ on:
 
 jobs:
   test-html:
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - ubuntu-latest
 
     steps:
       - name: Récupération du code
