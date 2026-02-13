@@ -5,6 +5,10 @@ on:
     workflows: ["CI - Vérification HTML"]
     branches: ["main"]
     types: [completed]
+  
+permissions:
+  contents: write
+
 
 jobs:
   deploy:
