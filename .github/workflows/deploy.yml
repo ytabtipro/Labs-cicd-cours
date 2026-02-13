@@ -1,5 +1,4 @@
-name: CD - Déploiement sur GitHub Pages
-
+name: Publication site
 on:
   push:
     branches: ["main"]
@@ -15,8 +14,12 @@ jobs:
       - name: Récupération du code
         uses: actions/checkout@v3
 
-      - name: Déploiement vers GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Configuration de la page
+        uses: peaceiris/configure-pages@v5
+
+      - name: utilisation d'artifact
+        uses: peaceiris/upload-pages-artifact@v3
+
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          path: .
+      - uses: action/deploy-pages@v4
