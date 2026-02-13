@@ -5,23 +5,21 @@ on:
     workflows: ["CI - Vérification HTML"]
     branches: ["main"]
     types: [completed]
-  
+
 permissions:
   contents: read
   pages: write
   id-token: write
 
-
-
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on:
-      - self-hosted
-      - linux
-      - x64
-      
-    
+    runs-on: [self-hosted, linux, x64]
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout du commit validé par la CI
         uses: actions/checkout@v4
@@ -37,4 +35,5 @@ jobs:
           path: .
 
       - name: Déployer sur GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
