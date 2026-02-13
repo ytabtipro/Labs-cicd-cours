@@ -12,7 +12,7 @@ jobs:
       - self-hosted
       - linux
       - x64
-      - ubuntu-latest
+      
 
     steps:
       - name: Récupération du code
