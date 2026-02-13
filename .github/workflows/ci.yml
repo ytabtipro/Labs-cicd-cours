@@ -1,4 +1,4 @@
-name: CI - Verification HTML
+name: CI - Vérification HTML
 
 on:
   push:
